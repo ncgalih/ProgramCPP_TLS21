@@ -57,11 +57,26 @@ waktu getTimeNow(){
     Now.day = ltm->tm_mday;
     Now.wday = ltm->tm_wday;
     Now.month = 1 + ltm->tm_mon;
-    Now.year = 1900 + ltm->tm_year;
+    Now.year = ltm->tm_year - 100;
     Now.hh = ltm->tm_hour;
     Now.mm = ltm->tm_min;
     cout<<weekday(Now.wday)<<", "<<Now.day<<" "<<month(Now.month)<<" "<<Now.year<<"  "<<Now.hh<<":"<<Now.mm<<"\n\n";
     return Now;
+}
+
+string displayDL(struct waktu dl, struct waktu Now){
+    struct waktu dl, Now;
+    
+    if(dl.year==Now.year){
+        if((dl.month==Now.month)&&((dl.day-Now.day)<7)){
+            int wday = Now.wday+dl.day-Now.day;
+             return weekday(wday) + " " + to_string(dl.hh) + ":" + to_string(dl.mm);
+        } else {
+            return to_string(dl.day) + " " + month(dl.month) + " " + to_string(dl.hh) + ":" + to_string(dl.mm);
+        }       
+    } else {
+        return to_string(dl.day) + " " + month(dl.month) + " 20" + to_string(dl.year);
+    }
 }
 
 void display(vector <newTugas> Tugas){
@@ -75,7 +90,7 @@ void display(vector <newTugas> Tugas){
         for(int i=0; i < Tugas.size(); i++){
             cout<<i+1<<"\t";
             cout<<Tugas[i].name<<"\t\t";
-            cout<<Tugas[i].dl.day<<" "<<Tugas[i].dl.month<<"\t\t[";
+            cout<< displayDL(Tugas[i].dl,Now) <<"\t\t[";
             if(Tugas[i].selesai) cout<<"V";
             cout<<"]\n";
         }
@@ -103,7 +118,8 @@ int main(){
             cout<<"input nama tugas : ";
             getline(cin, input.name);
             input.dl = inputDL();
-          
+            input.selesai=false;
+
             Tugas.push_back(input);
             break;
         case 2:
