@@ -4,11 +4,36 @@
 
 using namespace std;
 
+struct waktu {
+    int day;
+    int month;
+    int year;
+    int hh;
+    int mm;
+};
+
+
 struct newTugas {
     string name;
-    string dl;
+    struct waktu dl;
     bool selesai;
 };
+
+waktu inputDL(){
+    string dl;
+    struct waktu DL;
+    cout<< "tambahkan deadline (dd/mm/yy hh:mm): ";
+    getline(cin, dl);
+    DL.day   = stoi(dl.substr(0,2));
+    DL.month = stoi(dl.substr(3,2));
+    DL.year  = stoi(dl.substr(6,2));
+    DL.hh    = stoi(dl.substr(9,2));
+    DL.dmm   = stoi(dl.substr(12,2));
+    
+    return DL;
+}
+
+
 
 void display(vector <newTugas> Tugas){
     
@@ -20,7 +45,7 @@ void display(vector <newTugas> Tugas){
         for(int i=0; i < Tugas.size(); i++){
             cout<<i+1<<"\t";
             cout<<Tugas[i].name<<"\t\t";
-            cout<<Tugas[i].dl<<"\t\t[";
+            cout<<Tugas[i].dl.day<<"\t\t[";
             if(Tugas[i].selesai) cout<<"V";
             cout<<"]\n";
         }
@@ -31,8 +56,9 @@ int main(){
     vector <newTugas> Tugas;
     int perintah;
     bool exit = false;
-    cout<<"\tAplikasi Manajemen Tugas\n\n";
+    
     while(exit==0){
+        cout<<"\tAplikasi Manajemen Tugas\n\n";
         display(Tugas);
         cout<<"\npilih perintah :1. Tambah tugas\n\t\t2. edit tugas\n\t\t3. centang tugas\n\t\t4. hapus tugas";
         cout<<"\npilih id perintah : ";
@@ -46,8 +72,7 @@ int main(){
             cout<<"tambah tugas baru \n";
             cout<<"input nama tugas : ";
             getline(cin, input.name);
-            cout<<"tambahkan deadline tugas : ";
-            getline(cin, input.dl);
+            input.dl = inputDL();
           
             Tugas.push_back(input);
             break;
@@ -57,8 +82,7 @@ int main(){
             cin.ignore(1, '\n');
             cout<< "edit nama tugas : ";
             getline(cin, input.name);
-            cout<< "edit deadline : ";
-            getline(cin, input.dl);
+            input.dl = inputDL();
 
             Tugas[id-1]=input;
             break;
