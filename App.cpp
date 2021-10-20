@@ -65,7 +65,6 @@ waktu getTimeNow(){
 }
 
 string displayDL(struct waktu dl, struct waktu Now){
-    struct waktu dl, Now;
     
     if(dl.year==Now.year){
         if((dl.month==Now.month)&&((dl.day-Now.day)<7)){
@@ -89,8 +88,8 @@ void display(vector <newTugas> Tugas){
     cout<<"id\ttugas\t\tdeadline\tselesai\n";
         for(int i=0; i < Tugas.size(); i++){
             cout<<i+1<<"\t";
-            cout<<Tugas[i].name<<"\t\t";
-            cout<< displayDL(Tugas[i].dl,Now) <<"\t\t[";
+            cout<<Tugas[i].name<<"\t";
+            cout<< displayDL(Tugas[i].dl,Now) <<"\t[";
             if(Tugas[i].selesai) cout<<"V";
             cout<<"]\n";
         }
