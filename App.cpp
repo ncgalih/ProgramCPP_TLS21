@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <ctime>
 
 using namespace std;
 
@@ -10,8 +11,8 @@ struct waktu {
     int year;
     int hh;
     int mm;
+    int wday;
 };
-
 
 struct newTugas {
     string name;
@@ -28,15 +29,28 @@ waktu inputDL(){
     DL.month = stoi(dl.substr(3,2));
     DL.year  = stoi(dl.substr(6,2));
     DL.hh    = stoi(dl.substr(9,2));
-    DL.dmm   = stoi(dl.substr(12,2));
+    DL.mm   = stoi(dl.substr(12,2));
     
     return DL;
 }
 
-
+waktu getTimeNow(){
+    time_t now = time(0);
+    tm *ltm = localtime(&now);
+    struct waktu Now;
+    Now.day = ltm->tm_mday;
+    Now.wday = ltm->tm_wday;
+    Now.month = 1 + ltm->tm_mon;
+    Now.year = 1900 + ltm->tm_year;
+    Now.hh = ltm->tm_hour;
+    Now.mm = ltm->tm_min;
+    cout<<<<Now.wday<<"  "<<Now.day<<" "<<Now.month<<" "<<Now.year<<"  "<<Now.hh<<":"<<Now.mm<<"\n\n";
+    return Now;
+}
 
 void display(vector <newTugas> Tugas){
-    
+    struct waktu Now;
+    Now = getTimeNow();
     if (Tugas.size()==0){
         cout<<"belum ada tugas silahkan tambahkan tugas baru \n";
     }
@@ -45,7 +59,7 @@ void display(vector <newTugas> Tugas){
         for(int i=0; i < Tugas.size(); i++){
             cout<<i+1<<"\t";
             cout<<Tugas[i].name<<"\t\t";
-            cout<<Tugas[i].dl.day<<"\t\t[";
+            cout<<Tugas[i].dl.day<<" "<<Tugas[i].dl.month<<"\t\t[";
             if(Tugas[i].selesai) cout<<"V";
             cout<<"]\n";
         }
