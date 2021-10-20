@@ -20,6 +20,22 @@ struct newTugas {
     bool selesai;
 };
 
+string weekday(int d){
+    switch (d){
+    case 1: return "Senin"; case 2: return "Selasa"; case 3: return "Rabu" ;
+    case 4: return "Kamis"; case 5: return "Jumat" ; case 6: return "Sabtu";
+    case 7: return "Minggu";
+    }
+}
+
+string month(int m){
+    switch (m){
+    case 1: return "Jan"; case 2: return "Feb"; case 3: return "Mar" ; case 4: return "April"; 
+    case 5: return "Mei" ; case 6: return "Jun"; case 7: return "Jul"; case 8: return "Ags";
+    case 9: return "Sep" ; case 10: return "Okt"; case 11: return "Nov"; case 12: return "Des";
+    }
+}
+
 waktu inputDL(){
     string dl;
     struct waktu DL;
@@ -44,7 +60,7 @@ waktu getTimeNow(){
     Now.year = 1900 + ltm->tm_year;
     Now.hh = ltm->tm_hour;
     Now.mm = ltm->tm_min;
-    cout<<<<Now.wday<<"  "<<Now.day<<" "<<Now.month<<" "<<Now.year<<"  "<<Now.hh<<":"<<Now.mm<<"\n\n";
+    cout<<weekday(Now.wday)<<", "<<Now.day<<" "<<month(Now.month)<<" "<<Now.year<<"  "<<Now.hh<<":"<<Now.mm<<"\n\n";
     return Now;
 }
 
