@@ -68,7 +68,7 @@ string displayDL(struct waktu dl, struct waktu Now){
     
     if(dl.year==Now.year){
         if((dl.month==Now.month)&&((dl.day-Now.day)<7)){
-            int wday = Now.wday+dl.day-Now.day;
+            int wday = (Now.wday+dl.day-Now.day)%7;
              return weekday(wday) + " " + to_string(dl.hh) + ":" + to_string(dl.mm);
         } else {
             return to_string(dl.day) + " " + month(dl.month) + " " + to_string(dl.hh) + ":" + to_string(dl.mm);
@@ -96,23 +96,25 @@ void display(vector <newTugas> Tugas){
     }
 }
 
+// Fungsi Utama
 int main(){
-    vector <newTugas> Tugas;
+    vector <newTugas> Tugas; 
     int perintah;
     bool exit = false;
     
     while(exit==0){
-        cout<<"\tAplikasi Manajemen Tugas\n\n";
-        display(Tugas);
-        cout<<"\npilih perintah :1. Tambah tugas\n\t\t2. edit tugas\n\t\t3. centang tugas\n\t\t4. hapus tugas";
+        system("clear"); system("cls");     //clearscrean
+        cout<<"\tAplikasi Manajemen Tugas\n\n"; 
+        display(Tugas); //Tampilkan tugas
+        cout<<"\npilih perintah :1. Tambah tugas\n\t\t2. edit tugas\n\t\t3. centang tugas\n\t\t4. hapus tugas\n\t\t0. exit";
         cout<<"\npilih id perintah : ";
         cin >>perintah;
         cin.ignore(1, '\n');
-        struct newTugas input;
+        struct newTugas input; 
         int id;
         switch (perintah)
         {
-        case 1:
+        case 1: //menambah tugas baru
             cout<<"tambah tugas baru \n";
             cout<<"input nama tugas : ";
             getline(cin, input.name);
@@ -121,7 +123,7 @@ int main(){
 
             Tugas.push_back(input);
             break;
-        case 2:
+        case 2: //edit tugas
             cout<<"pilih id tugas yang akan diedit : ";
             cin >> id;
             cin.ignore(1, '\n');
@@ -131,20 +133,25 @@ int main(){
 
             Tugas[id-1]=input;
             break;
-        case 3:
+        case 3: //centang tugas
             cout<<"centang tugas yang sudah selesai (id) : ";
             cin >> id; 
             
             Tugas[id-1].selesai=true;
             break;
-        case 4:
+        case 4: //hapus tugas
             cout<<"pilih id tugas yang akan di hapus : ";
             cin >> id;
 
             Tugas.erase(Tugas.begin()+id-1);
+            break;
+        case 0: //keluar 
+            exit=true;
+            break;
+        default: 
+            cout<<"invalid input";
         }
-        system("clear"); system("cls");
-        
+                
     }
 
     return 0;
