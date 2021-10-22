@@ -92,6 +92,29 @@ void display(vector <newTugas> Tugas){
         }
     }
 }
+// Membandingkan waktu 
+bool compare(tm a, tm b){
+    if(a.tm_year > b.tm_year) return true;
+    if(a.tm_year == b.tm_year && a.tm_mon > b.tm_mon) return true;
+    if(a.tm_year == b.tm_year && a.tm_mon == b.tm_mon && a.tm_mday > b.tm_mday) return true;
+    if(a.tm_year == b.tm_year && a.tm_mon == b.tm_mon && a.tm_mday == b.tm_mday && a.tm_hour > b.tm_hour) return true;
+    if(a.tm_year == b.tm_year && a.tm_mon == b.tm_mon && a.tm_mday == b.tm_mday && a.tm_hour == b.tm_hour && a.tm_min > b.tm_min) return true;
+    return false;
+}
+// Menukar data
+void swap(struct newTugas &a, struct newTugas &b){
+    struct newTugas temp = a;
+    a = b;
+    b = temp;
+}
+// Fungsi mengurutkan data berdasarkan waktu deadline
+void shortbyDate(vector <newTugas> &T){
+    for(int i = T.size()-1; i > 0; i--){
+        for(int k = 0; k < i; k++){
+            if(compare(T[k].dl,T[k+1].dl)) swap(T[k],T[k+1]);
+        }
+    }
+}
 
 // Fungsi Utama
 int main(){
@@ -103,7 +126,7 @@ int main(){
         system("clear"); system("cls");     //clearscrean
         cout<<"\tAplikasi Manajemen Tugas\n\n"; 
         display(Tugas); //Tampilkan seluruh tugas
-        cout<<"\npilih perintah :1. Tambah tugas\n\t\t2. edit tugas\n\t\t3. centang tugas\n\t\t4. hapus tugas\n\t\t0. exit";
+        cout<<"\npilih perintah :1. Tambah tugas\n\t\t2. edit tugas\n\t\t3. centang tugas\n\t\t4. hapus tugas\n\t\t5. Urutkan tugas berdasarkan deadline\n\t\t0. exit";
         cout<<"\npilih id perintah : ";
         cin >>perintah; 
         cin.ignore(1, '\n');
@@ -141,6 +164,9 @@ int main(){
             cin >> id;
 
             Tugas.erase(Tugas.begin()+id-1);
+            break;
+        case 5: 
+            shortbyDate(Tugas);
             break;
         case 0: //keluar 
             exit=true;
