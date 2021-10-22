@@ -5,21 +5,13 @@
 
 using namespace std;
 
-struct waktu {
-    int day;
-    int month;
-    int year;
-    int hh;
-    int mm;
-    int wday;
-};
-
 struct newTugas {
     string name;
-    struct waktu dl;
+    tm dl;
     bool selesai;
 };
 
+//konversi angka ke nama hari
 string weekday(int d){
     switch (d){
     case 1: return "Senin"; case 2: return "Selasa"; case 3: return "Rabu" ;
@@ -28,6 +20,7 @@ string weekday(int d){
     }
 }
 
+//konversi angka ke nama bulan
 string month(int m){
     switch (m){
     case 1: return "Jan"; case 2: return "Feb"; case 3: return "Mar" ; case 4: return "April"; 
@@ -36,50 +29,54 @@ string month(int m){
     }
 }
 
-waktu inputDL(){
+//mengambil input deadline 
+tm inputDL(){
     string dl;
-    struct waktu DL;
+    tm DL;
     cout<< "tambahkan deadline (dd/mm/yy hh:mm): ";
     getline(cin, dl);
-    DL.day   = stoi(dl.substr(0,2));
-    DL.month = stoi(dl.substr(3,2));
-    DL.year  = stoi(dl.substr(6,2));
-    DL.hh    = stoi(dl.substr(9,2));
-    DL.mm   = stoi(dl.substr(12,2));
+    DL.tm_mday   = stoi(dl.substr(0,2));
+    DL.tm_mon = stoi(dl.substr(3,2));
+    DL.tm_year  = stoi(dl.substr(6,2));
+    DL.tm_hour    = stoi(dl.substr(9,2));
+    DL.tm_min   = stoi(dl.substr(12,2));
     
     return DL;
 }
 
-waktu getTimeNow(){
+//Fungsi mengambil waktu sekarang
+tm getTimeNow(){
     time_t now = time(0);
     tm *ltm = localtime(&now);
-    struct waktu Now;
-    Now.day = ltm->tm_mday;
-    Now.wday = ltm->tm_wday;
-    Now.month = 1 + ltm->tm_mon;
-    Now.year = ltm->tm_year - 100;
-    Now.hh = ltm->tm_hour;
-    Now.mm = ltm->tm_min;
-    cout<<weekday(Now.wday)<<", "<<Now.day<<" "<<month(Now.month)<<" "<<Now.year<<"  "<<Now.hh<<":"<<Now.mm<<"\n\n";
+    tm Now;
+    Now.tm_mday = ltm->tm_mday;
+    Now.tm_wday = ltm->tm_wday;
+    Now.tm_mon = 1 + ltm->tm_mon;
+    Now.tm_year = ltm->tm_year - 100;
+    Now.tm_hour = ltm->tm_hour;
+    Now.tm_min = ltm->tm_min;
+    cout<<weekday(Now.tm_wday)<<", "<<Now.tm_mday<<" "<<month(Now.tm_mon)<<" "<<Now.tm_year<<"  "<<Now.tm_hour<<":"<<Now.tm_min<<"\n\n";
     return Now;
 }
 
-string displayDL(struct waktu dl, struct waktu Now){
+//Menampilkan deadline tugas
+string displayDL(tm dl, tm Now){
     
-    if(dl.year==Now.year){
-        if((dl.month==Now.month)&&((dl.day-Now.day)<7)){
-            int wday = (Now.wday+dl.day-Now.day)%7;
-             return weekday(wday) + " " + to_string(dl.hh) + ":" + to_string(dl.mm);
+    if(dl.tm_year==Now.tm_year){
+        if((dl.tm_mon==Now.tm_mon)&&((dl.tm_mday-Now.tm_mday)<7)){
+            int wday = (Now.tm_wday+dl.tm_mday-Now.tm_mday)%7;
+             return weekday(wday) + " " + to_string(dl.tm_hour) + ":" + to_string(dl.tm_min);
         } else {
-            return to_string(dl.day) + " " + month(dl.month) + " " + to_string(dl.hh) + ":" + to_string(dl.mm);
+            return to_string(dl.tm_mday) + " " + month(dl.tm_mon) + " " + to_string(dl.tm_hour) + ":" + to_string(dl.tm_min);
         }       
     } else {
-        return to_string(dl.day) + " " + month(dl.month) + " 20" + to_string(dl.year);
+        return to_string(dl.tm_mday) + " " + month(dl.tm_mon) + " 20" + to_string(dl.tm_year);
     }
 }
 
+//Menampilkan seluruh tugas
 void display(vector <newTugas> Tugas){
-    struct waktu Now;
+    tm Now;
     Now = getTimeNow();
     if (Tugas.size()==0){
         cout<<"belum ada tugas silahkan tambahkan tugas baru \n";
@@ -105,10 +102,10 @@ int main(){
     while(exit==0){
         system("clear"); system("cls");     //clearscrean
         cout<<"\tAplikasi Manajemen Tugas\n\n"; 
-        display(Tugas); //Tampilkan tugas
+        display(Tugas); //Tampilkan seluruh tugas
         cout<<"\npilih perintah :1. Tambah tugas\n\t\t2. edit tugas\n\t\t3. centang tugas\n\t\t4. hapus tugas\n\t\t0. exit";
         cout<<"\npilih id perintah : ";
-        cin >>perintah;
+        cin >>perintah; 
         cin.ignore(1, '\n');
         struct newTugas input; 
         int id;
